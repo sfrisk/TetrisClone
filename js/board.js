@@ -5,6 +5,7 @@ function Board(){
 	this.height = 576;
 	this.cellwidth = 32;
 	this.running = true;
+	this.cycle = 0;
 	this.currentTile = [4,0];
 	this.map = [
 	[0,0,0,0,0,0,0,0,0,0],
@@ -33,6 +34,11 @@ Board.prototype.draw = function(){
 		this.clear();
 		this.generateGrid();
 		this.drawActive();
+		this.cycle ++;
+		if (this.cycle == 10){
+			this.cycle = 0;
+			this.moveActiveDown();
+		}
 	}
 	
 }
@@ -64,8 +70,7 @@ Board.prototype.drawRect = function(x,y,w,h,color){
 	this.ctx.fill();
 }
 
-Board.prototype.drawActive = function(){	
-	this.drawRect(this.currentTile[0]*32,this.currentTile[1]*32, 32, 32, [218,112,214]);
+Board.prototype.moveActiveDown = function(){
 	if(this.map[this.currentTile[1] + 1][this.currentTile[0]] == 0)
 		this.currentTile[1] +=1;
 	else{
@@ -79,6 +84,10 @@ Board.prototype.drawActive = function(){
 			this.currentTile = [4,0]
 		}
 	}
+}
+
+Board.prototype.drawActive = function(){	
+	this.drawRect(this.currentTile[0]*32,this.currentTile[1]*32, 32, 32, [218,112,214]);
 }
 
 Board.prototype.moveRight = function(){
