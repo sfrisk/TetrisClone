@@ -1,0 +1,29 @@
+<html>
+	<head>
+		<title>Tetris Clone</title>
+		<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js" type="text/javascript"></script>
+		
+		<script src="js/game.js" type="text/javascript"></script>
+		<script src="js/board.js" type="text/javascript"></script>	
+		<script src="js/controls.js" type="text/javascript"></script>	
+	
+	<style>
+	canvas{border: 1px solid pink; margin: 10px auto; text-align:center; width: 320px;}
+	.wrap{width:320px; margin: 10px auto;}
+	body, html{background: black;}
+	</style>
+
+	</head>
+	<body>
+		<div class="wrap">
+		
+			
+		<canvas id="canvas" height="576" width="320">Your browser is lame and doesn't support canvas</canvas>
+		</div>		
+		<script type="text/javascript">
+		
+			var game = new Game();
+			setTimeout("game.init();",200);
+		</script>
+	</body>
+</html>
