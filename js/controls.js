@@ -9,15 +9,14 @@ function checkKey(e){
 		case RIGHT:
 			e.preventDefault();
 			game.board.moveRight()
-			console.log('right');
 			break;
 		case LEFT:
 			e.preventDefault();
-			game.board.moveLeft()
-			console.log('left');
+			game.board.moveLeft();
 			break;
 		case DOWN:
 			e.preventDefault();
+			game.board.moveDown();
 			break;
 		case UP:
 			e.preventDefault();

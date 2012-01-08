@@ -6,7 +6,7 @@ function Board(){
 	this.cellwidth = 32;
 	this.running = true;
 	this.cycle = 0;
-	this.currentTile = [4,0];
+	this.currentTile = [4,-1];
 	this.map = [
 	[0,0,0,0,0,0,0,0,0,0],
 	[0,0,0,0,0,0,0,0,0,0],
@@ -56,6 +56,9 @@ Board.prototype.generateGrid = function(){
 				case 2:
 					this.drawRect(x*32,y*32, 32, 32, [49,79,79]);
 					break;
+				case 3: 
+					this.drawRect(x*32,y*32, 32, 32, [255,105,180]);
+					break;
 				default:
 					this.drawRect(x*32,y*32, 32, 32, [255,250,250]);		
 			}		
@@ -81,8 +84,32 @@ Board.prototype.moveActiveDown = function(){
 		}
 		else{
 			this.map[this.currentTile[1]][this.currentTile[0]] = 2;
-			this.currentTile = [4,0]
+			this.currentTile = [4,-1];
+			this.checkForRow();
+
 		}
+	}
+}
+
+Board.prototype.checkForRow = function(){
+	for (var y = 0; y < 17; y++){
+		var isRow = true;
+		var x = 0;
+		while (x < 10){
+			if(this.map[y][x] == 0){
+				console.log("Not a row");
+				isRow = false;	
+				x = 10;
+			}
+			else
+				x++;
+		}
+		if(isRow == true){
+			console.log("THERE IS A ROW!!!");
+			for (var x = 0; x < 10; x++)
+				this.map[y][x] = 3;
+		}
+		
 	}
 }
 
@@ -100,6 +127,14 @@ Board.prototype.moveRight = function(){
 Board.prototype.moveLeft = function(){
 	if(this.map[this.currentTile[1]][this.currentTile[0] - 1] == 0)
 		this.currentTile[0] -=1;
+	else{
+		
+	}
+}
+
+Board.prototype.moveDown = function(){
+	if(this.map[this.currentTile[1]+1][this.currentTile[0]] == 0)
+		this.currentTile[1] +=1;
 	else{
 		
 	}
