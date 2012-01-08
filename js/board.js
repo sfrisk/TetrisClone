@@ -117,7 +117,14 @@ Board.prototype.checkForRow = function(){
 			//Neeeeeext
 		}
 		else{
-			
+			for(var i = y; i > 0; i--){
+				for (var x = 0; x < 10; x++){
+					this.map[i][x] = this.map[i-1][x];
+				}
+			}
+			for (var x = 0; x < 10; x++){
+				this.map[i][x] = 0;
+			}
 		}
 		
 	}
