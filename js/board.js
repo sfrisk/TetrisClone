@@ -26,7 +26,7 @@ function Board(){
 	[0,0,0,0,0,0,0,0,0,0],
 	[0,0,0,0,0,0,0,0,0,0],
 	[1,1,1,1,1,1,1,1,1,1]	
-	]
+	];
 }
 Board.prototype.draw = function(){
 	if(this.running)
@@ -74,8 +74,9 @@ Board.prototype.drawRect = function(x,y,w,h,color){
 }
 
 Board.prototype.moveActiveDown = function(){
-	if(this.map[this.currentTile[1] + 1][this.currentTile[0]] == 0)
+	if(this.map[this.currentTile[1] + 1][this.currentTile[0]] == 0){
 		this.currentTile[1] +=1;
+	}
 	else{
 		if(this.currentTile[1] == 0)
 		{
@@ -97,17 +98,26 @@ Board.prototype.checkForRow = function(){
 		var x = 0;
 		while (x < 10){
 			if(this.map[y][x] == 0){
-				console.log("Not a row");
 				isRow = false;	
 				x = 10;
 			}
-			else
+			else{
 				x++;
+			}
 		}
 		if(isRow == true){
-			console.log("THERE IS A ROW!!!");
-			for (var x = 0; x < 10; x++)
+			for (var x = 0; x < 10; x++){
 				this.map[y][x] = 3;
+			}		
+		}
+		
+	}
+	for(var y = 17; y > -1; y--){
+		if(this.map[y][0] != 3){
+			//Neeeeeext
+		}
+		else{
+			
 		}
 		
 	}
@@ -118,23 +128,26 @@ Board.prototype.drawActive = function(){
 }
 
 Board.prototype.moveRight = function(){
-	if(this.map[this.currentTile[1]][this.currentTile[0] + 1] == 0)
+	if(this.map[this.currentTile[1]][this.currentTile[0] + 1] == 0){
 		this.currentTile[0] +=1;
+	}
 	else{
 		
 	}
 }
 Board.prototype.moveLeft = function(){
-	if(this.map[this.currentTile[1]][this.currentTile[0] - 1] == 0)
+	if(this.map[this.currentTile[1]][this.currentTile[0] - 1] == 0){
 		this.currentTile[0] -=1;
+	}
 	else{
 		
 	}
 }
 
 Board.prototype.moveDown = function(){
-	if(this.map[this.currentTile[1]+1][this.currentTile[0]] == 0)
+	if(this.map[this.currentTile[1]+1][this.currentTile[0]] == 0){
 		this.currentTile[1] +=1;
+	}
 	else{
 		
 	}
