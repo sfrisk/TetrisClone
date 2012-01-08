@@ -20,6 +20,7 @@ function checkKey(e){
 			break;
 		case UP:
 			e.preventDefault();
+			game.board.rotate();
 			break;
 		
 	}

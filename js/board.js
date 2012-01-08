@@ -6,7 +6,12 @@ function Board(){
 	this.cellwidth = 32;
 	this.running = true;
 	this.cycle = 0;
+	this.completedRows = 0;
 	this.currentTile = [4,-1];
+	this.tile = 	[[0,1,0,0],
+					[0,1,0,0],
+					[0,1,1,0],
+					[0,0,0,0]];
 	this.map = [
 	[0,0,0,0,0,0,0,0,0,0],
 	[0,0,0,0,0,0,0,0,0,0],
@@ -27,6 +32,8 @@ function Board(){
 	[0,0,0,0,0,0,0,0,0,0],
 	[1,1,1,1,1,1,1,1,1,1]	
 	];
+	
+	
 }
 Board.prototype.draw = function(){
 	if(this.running)
@@ -74,7 +81,8 @@ Board.prototype.drawRect = function(x,y,w,h,color){
 }
 
 Board.prototype.moveActiveDown = function(){
-	if(this.map[this.currentTile[1] + 1][this.currentTile[0]] == 0){
+	//if(this.map[this.currentTile[1] + 1][this.currentTile[0]] == 0){
+	if(this.checkCollision() == false){
 		this.currentTile[1] +=1;
 	}
 	else{
@@ -84,12 +92,32 @@ Board.prototype.moveActiveDown = function(){
 			this.running = false;
 		}
 		else{
-			this.map[this.currentTile[1]][this.currentTile[0]] = 2;
+			//this.map[this.currentTile[1]][this.currentTile[0]] = 2;
+			for(var i=0; i < this.tile[0].length; i++){
+				for(var j=this.tile.length-1; j>=0; j--){
+					if(this.tile[i][j] == 1){
+						this.map[this.currentTile[1] +i ][this.currentTile[0] + j] = 2;
+					}
+				}
+			}
+					
 			this.currentTile = [4,-1];
 			this.checkForRow();
 
 		}
 	}
+}
+
+Board.prototype.checkCollision = function(){
+	for(var i=0; i < this.tile[0].length; i++){
+		for(var j=this.tile.length-1; j>=0; j--){
+			if(this.tile[i][j] == 1 && this.map[this.currentTile[1]+i + 1][this.currentTile[0]+j] != 0){
+				return true;
+			}
+		}
+	}
+	
+	return false;
 }
 
 Board.prototype.checkForRow = function(){
@@ -108,7 +136,8 @@ Board.prototype.checkForRow = function(){
 		if(isRow == true){
 			for (var x = 0; x < 10; x++){
 				this.map[y][x] = 3;
-			}		
+			}
+			this.completedRows += 1;		
 		}
 		
 	}
@@ -131,10 +160,20 @@ Board.prototype.checkForRow = function(){
 }
 
 Board.prototype.drawActive = function(){	
-	this.drawRect(this.currentTile[0]*32,this.currentTile[1]*32, 32, 32, [218,112,214]);
+	for(var i=0; i < this.tile[0].length; i++){
+		for(var j=this.tile.length-1; j>=0; j--){
+			if(this.tile[i][j] == 1){
+				this.drawRect(this.currentTile[0]*32 + (j*32),this.currentTile[1]*32 + (i*32), 32, 32, [218,112,214]);
+			}
+		}
+	}
+	
+	//this.drawRect(this.currentTile[0]*32,this.currentTile[1]*32, 32, 32, [218,112,214]);
 }
 
 Board.prototype.moveRight = function(){
+	
+	
 	if(this.map[this.currentTile[1]][this.currentTile[0] + 1] == 0){
 		this.currentTile[0] +=1;
 	}
@@ -158,4 +197,20 @@ Board.prototype.moveDown = function(){
 	else{
 		
 	}
+}
+
+Board.prototype.rotate = function(){
+
+	var newTile = 	[[0,0,0,0],
+					[0,0,0,0],
+					[0,0,0,0],
+					[0,0,0,0]];
+	for(var i=0; i < this.tile[0].length; i++){
+		for(var j=this.tile.length-1; j>=0; j--){
+			newTile[i][j] = this.tile[4-j-1][i];
+		}
+	}
+	this.tile = newTile;
+	//console.log(this.tile);
+
 }
