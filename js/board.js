@@ -6,6 +6,7 @@ function Board(){
 	this.cellwidth = 32;
 	this.running = true;
 	this.cycle = 0;
+	this.move = false;
 	this.completedRows = 0;
 	this.currentTile = [4,-1];
 	this.tile = 	[[0,1,0,0],
@@ -44,8 +45,12 @@ Board.prototype.draw = function(){
 		this.cycle ++;
 		if (this.cycle == 10){
 			this.cycle = 0;
-			this.moveActiveDown();
+			if(this.move == false){
+				this.moveActiveDown();
+			}
+			
 		}
+		this.move = false;
 	}
 	
 }
@@ -106,6 +111,7 @@ Board.prototype.moveActiveDown = function(){
 
 		}
 	}
+	this.move = true;
 }
 
 Board.prototype.checkCollision = function(){
@@ -167,21 +173,28 @@ Board.prototype.drawActive = function(){
 			}
 		}
 	}
-	
-	//this.drawRect(this.currentTile[0]*32,this.currentTile[1]*32, 32, 32, [218,112,214]);
 }
 
 Board.prototype.moveRight = function(){
-	
-	
-	if(this.map[this.currentTile[1]][this.currentTile[0] + 1] == 0){
+	var moveRight = true;
+	for(var i=0; i < this.tile[0].length; i++){
+		for(var j=this.tile.length-1; j>=0; j--){
+			if(this.tile[i][j] == 1){
+				if(this.currentTile[1] + i < 11 && this.map[this.currentTile[1]+i ][this.currentTile[0]+j - 1] == 0){
+					
+				}
+				else{
+					moveRight = false;
+				}
+			}
+		}
+	}
+	if(moveRight == true){
 		this.currentTile[0] +=1;
 	}
-	else{
-		
-	}
+	
 }
-Board.prototype.moveLeft = function(){
+Board.prototype.moveLeft = function(){	
 	if(this.map[this.currentTile[1]][this.currentTile[0] - 1] == 0){
 		this.currentTile[0] -=1;
 	}
@@ -190,27 +203,18 @@ Board.prototype.moveLeft = function(){
 	}
 }
 
-Board.prototype.moveDown = function(){
-	if(this.map[this.currentTile[1]+1][this.currentTile[0]] == 0){
-		this.currentTile[1] +=1;
-	}
-	else{
-		
-	}
-}
-
 Board.prototype.rotate = function(){
-
 	var newTile = 	[[0,0,0,0],
 					[0,0,0,0],
 					[0,0,0,0],
 					[0,0,0,0]];
+
 	for(var i=0; i < this.tile[0].length; i++){
 		for(var j=this.tile.length-1; j>=0; j--){
 			newTile[i][j] = this.tile[4-j-1][i];
 		}
 	}
 	this.tile = newTile;
-	//console.log(this.tile);
+
 
 }

@@ -16,7 +16,7 @@ function checkKey(e){
 			break;
 		case DOWN:
 			e.preventDefault();
-			game.board.moveDown();
+			game.board.moveActiveDown();
 			break;
 		case UP:
 			e.preventDefault();
