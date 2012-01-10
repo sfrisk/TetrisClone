@@ -8,11 +8,10 @@ function Board(){
 	this.cycle = 0;
 	this.move = false;
 	this.completedRows = 0;
-	this.currentTile = [4,-1];
-	this.tile = 	[[0,1,0,0],
-					[0,1,0,0],
-					[0,1,1,0],
-					[0,0,0,0]];
+	this.currentTile = [4,0];
+	this.tile = 	[[1,0],
+					[1,0],
+					[1,1]];
 	this.map = [
 	[0,0,0,0,0,0,0,0,0,0],
 	[0,0,0,0,0,0,0,0,0,0],
@@ -34,7 +33,20 @@ function Board(){
 	[1,1,1,1,1,1,1,1,1,1]	
 	];
 	
-	
+	this.tileone =	 	[[1,0],
+						[1,0],
+						[1,1]];
+	this.tiletwo = 		[[0,1],
+						[0,1],
+						[1,1]];
+	this.tilethree = 	[[1,0],
+						[1,1],
+						[1,0]];
+	this.tilefour = 	[[1,1],
+						[1,1]];
+						
+	this.tilefive = 	[[1,1,1,1]];
+						
 }
 Board.prototype.draw = function(){
 	if(this.running)
@@ -87,7 +99,7 @@ Board.prototype.drawRect = function(x,y,w,h,color){
 
 Board.prototype.moveActiveDown = function(){
 	//if(this.map[this.currentTile[1] + 1][this.currentTile[0]] == 0){
-	if(this.checkCollision() == false){
+	if(this.checkCollision(0,1) == false){
 		this.currentTile[1] +=1;
 	}
 	else{
@@ -100,11 +112,39 @@ Board.prototype.moveActiveDown = function(){
 			//this.map[this.currentTile[1]][this.currentTile[0]] = 2;
 			for(var i=0; i < this.tile[0].length; i++){
 				for(var j=this.tile.length-1; j>=0; j--){
-					if(this.tile[i][j] == 1){
-						this.map[this.currentTile[1] +i ][this.currentTile[0] + j] = 2;
+					if(this.tile[j][i] == 1){
+						this.map[this.currentTile[1] + j ][this.currentTile[0] + i] = 2;
 					}
 				}
 			}
+			
+			switch(Math.floor(Math.random()*5)){
+				case 0:
+					this.tile = this.tileone;
+					console.log(0);
+					break;
+				case 1:
+					this.tile = this.tiletwo;
+					console.log(1);
+					break;
+				case 2:
+					this.tile = this.tilethree;
+					console.log(2);
+					break;
+				case 3:
+					this.tile = this.tilefour;
+					console.log(3);
+					break;
+				case 4:
+					this.tile = this.tilefive;
+					console.log(4);
+					break;
+				
+			}
+				
+					
+	
+			
 					
 			this.currentTile = [4,-1];
 			this.checkForRow();
@@ -114,10 +154,12 @@ Board.prototype.moveActiveDown = function(){
 	this.move = true;
 }
 
-Board.prototype.checkCollision = function(){
+Board.prototype.checkCollision = function(x,y){
+
+	
 	for(var i=0; i < this.tile[0].length; i++){
 		for(var j=this.tile.length-1; j>=0; j--){
-			if(this.tile[i][j] == 1 && this.map[this.currentTile[1]+i + 1][this.currentTile[0]+j] != 0){
+			if(this.tile[j][i] == 1  && this.map[this.currentTile[1]+j + y][this.currentTile[0]+i +x] != 0){
 				return true;
 			}
 		}
@@ -165,53 +207,39 @@ Board.prototype.checkForRow = function(){
 	}
 }
 
-Board.prototype.drawActive = function(){	
+Board.prototype.drawActive = function(){
+
 	for(var i=0; i < this.tile[0].length; i++){
 		for(var j=this.tile.length-1; j>=0; j--){
-			if(this.tile[i][j] == 1){
-				this.drawRect(this.currentTile[0]*32 + (j*32),this.currentTile[1]*32 + (i*32), 32, 32, [218,112,214]);
+			if(this.tile[j][i] == 1){
+				this.drawRect(this.currentTile[0]*32 + (i*32),this.currentTile[1]*32 + (j*32), 32, 32, [218,112,214]);
 			}
 		}
 	}
 }
 
 Board.prototype.moveRight = function(){
-	var moveRight = true;
-	for(var i=0; i < this.tile[0].length; i++){
-		for(var j=this.tile.length-1; j>=0; j--){
-			if(this.tile[i][j] == 1){
-				if(this.currentTile[1] + i < 11 && this.map[this.currentTile[1]+i ][this.currentTile[0]+j - 1] == 0){
-					
-				}
-				else{
-					moveRight = false;
-				}
-			}
-		}
-	}
-	if(moveRight == true){
+	
+	if(this.checkCollision(1,0) == false){
 		this.currentTile[0] +=1;
 	}
-	
 }
 Board.prototype.moveLeft = function(){	
-	if(this.map[this.currentTile[1]][this.currentTile[0] - 1] == 0){
+
+	if(this.checkCollision(-1,0) == false){
 		this.currentTile[0] -=1;
-	}
-	else{
-		
 	}
 }
 
 Board.prototype.rotate = function(){
-	var newTile = 	[[0,0,0,0],
-					[0,0,0,0],
-					[0,0,0,0],
-					[0,0,0,0]];
 
+var newTile = new Array(this.tile[0].length-1);
+for (var i = 0; i < this.tile[0].length; i++) {	
+	newTile[i]=new Array(this.tile.length-1);
+}
 	for(var i=0; i < this.tile[0].length; i++){
 		for(var j=this.tile.length-1; j>=0; j--){
-			newTile[i][j] = this.tile[4-j-1][i];
+			newTile[i][j] = this.tile[this.tile.length-j-1][i];
 		}
 	}
 	this.tile = newTile;
