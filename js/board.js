@@ -6,12 +6,9 @@ function Board(){
 	this.cellwidth = 32;
 	this.running = true;
 	this.cycle = 0;
-	this.move = false;
 	this.completedRows = 0;
 	this.currentTile = [4,0];
-	this.tile = 	[[1,0],
-					[1,0],
-					[1,1]];
+	this.tile = 	[];
 	this.map = [
 	[0,0,0,0,0,0,0,0,0,0],
 	[0,0,0,0,0,0,0,0,0,0],
@@ -32,7 +29,6 @@ function Board(){
 	[0,0,0,0,0,0,0,0,0,0],
 	[1,1,1,1,1,1,1,1,1,1]	
 	];
-	
 	this.tileone =	 	[[1,0],
 						[1,0],
 						[1,1]];
@@ -43,9 +39,9 @@ function Board(){
 						[1,1],
 						[1,0]];
 	this.tilefour = 	[[1,1],
-						[1,1]];
-						
+						[1,1]];		
 	this.tilefive = 	[[1,1,1,1]];
+	this.setTile();
 						
 }
 Board.prototype.draw = function(){
@@ -57,12 +53,8 @@ Board.prototype.draw = function(){
 		this.cycle ++;
 		if (this.cycle == 10){
 			this.cycle = 0;
-			if(this.move == false){
-				this.moveActiveDown();
-			}
-			
+			this.moveActiveDown();	
 		}
-		this.move = false;
 	}
 	
 }
@@ -118,40 +110,13 @@ Board.prototype.moveActiveDown = function(){
 				}
 			}
 			
-			switch(Math.floor(Math.random()*5)){
-				case 0:
-					this.tile = this.tileone;
-					console.log(0);
-					break;
-				case 1:
-					this.tile = this.tiletwo;
-					console.log(1);
-					break;
-				case 2:
-					this.tile = this.tilethree;
-					console.log(2);
-					break;
-				case 3:
-					this.tile = this.tilefour;
-					console.log(3);
-					break;
-				case 4:
-					this.tile = this.tilefive;
-					console.log(4);
-					break;
-				
-			}
-				
-					
-	
-			
-					
+			this.setTile();		
 			this.currentTile = [4,-1];
 			this.checkForRow();
 
 		}
 	}
-	this.move = true;
+	
 }
 
 Board.prototype.checkCollision = function(x,y){
@@ -189,23 +154,38 @@ Board.prototype.checkForRow = function(){
 		}
 		
 	}
-	for(var y = 17; y > -1; y--){
-		if(this.map[y][0] != 3){
-			//Neeeeeext
-		}
-		else{
-			for(var i = y; i > 0; i--){
-				for (var x = 0; x < 10; x++){
-					this.map[i][x] = this.map[i-1][x];
+	while(this.rowsCleared() == false){
+		for(var y = 17; y > -1; y--){
+			if(this.map[y][0] != 3){
+				//Neeeeeext
+			}
+			else{
+				for(var i = y; i > 0; i--){
+					for (var x = 0; x < 10; x++){
+						this.map[i][x] = this.map[i-1][x];
+					}
 				}
-			}
-			for (var x = 0; x < 10; x++){
-				this.map[i][x] = 0;
-			}
+				for (var x = 0; x < 10; x++){
+					this.map[i][x] = 0;
+				}
+			}	
 		}
-		
 	}
 }
+
+Board.prototype.rowsCleared = function(){
+
+	for(var y = 17; y > -1; y--){
+		if(this.map[y][0] == 3){
+			return false;
+		}
+		else{
+		}	
+	}
+	return true;
+	
+}
+
 
 Board.prototype.drawActive = function(){
 
@@ -247,7 +227,29 @@ for (var i = 0; i < this.tile[0].length; i++) {
 	if(this.checkCollision(0,0) == true){
 		this.tile = old;
 	}
-	
+}
 
-
+Board.prototype.setTile = function(){
+	switch(Math.floor(Math.random()*5)){
+		case 0:
+			this.tile = this.tileone;
+			console.log(0);
+			break;
+		case 1:
+			this.tile = this.tiletwo;
+			console.log(1);
+			break;
+		case 2:
+			this.tile = this.tilethree;
+			console.log(2);
+			break;
+		case 3:
+			this.tile = this.tilefour;
+			console.log(3);
+			break;
+		case 4:
+			this.tile = this.tilefive;
+			console.log(4);
+			break;
+	}
 }
