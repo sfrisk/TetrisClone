@@ -8,7 +8,7 @@ function Board(){
 	this.cycle = 0;
 	this.completedRows = 0;
 	this.currentTile = [4,0];
-	this.tile = 	[];
+	this.tile =	[];
 	this.map = [
 	[0,0,0,0,0,0,0,0,0,0],
 	[0,0,0,0,0,0,0,0,0,0],
@@ -41,6 +41,10 @@ function Board(){
 	this.tilefour = 	[[1,1],
 						[1,1]];		
 	this.tilefive = 	[[1,1,1,1]];
+	this.tilesix =		[[1,1,0],
+						[0,1,1]];
+	this.tileseven =		[[0,1,1],
+						[1,1,0]];				
 	this.setTile();
 						
 }
@@ -56,7 +60,6 @@ Board.prototype.draw = function(){
 			this.moveActiveDown();	
 		}
 	}
-	
 }
 Board.prototype.clear = function(){
 	this.ctx.clearRect(0,0, this.width, this.height);
@@ -88,9 +91,7 @@ Board.prototype.drawRect = function(x,y,w,h,color){
 	this.ctx.closePath();
 	this.ctx.fill();
 }
-
 Board.prototype.moveActiveDown = function(){
-	//if(this.map[this.currentTile[1] + 1][this.currentTile[0]] == 0){
 	if(this.checkCollision(0,1) == false){
 		this.currentTile[1] +=1;
 	}
@@ -101,7 +102,6 @@ Board.prototype.moveActiveDown = function(){
 			this.running = false;
 		}
 		else{
-			//this.map[this.currentTile[1]][this.currentTile[0]] = 2;
 			for(var i=0; i < this.tile[0].length; i++){
 				for(var j=this.tile.length-1; j>=0; j--){
 					if(this.tile[j][i] == 1){
@@ -109,19 +109,15 @@ Board.prototype.moveActiveDown = function(){
 					}
 				}
 			}
-			
 			this.setTile();		
 			this.currentTile = [4,-1];
 			this.checkForRow();
-
 		}
 	}
 	
 }
 
-Board.prototype.checkCollision = function(x,y){
-
-	
+Board.prototype.checkCollision = function(x,y){	
 	for(var i=0; i < this.tile[0].length; i++){
 		for(var j=this.tile.length-1; j>=0; j--){
 			if(this.tile[j][i] == 1  && this.map[this.currentTile[1]+j + y][this.currentTile[0]+i +x] != 0){
@@ -129,7 +125,6 @@ Board.prototype.checkCollision = function(x,y){
 			}
 		}
 	}
-	
 	return false;
 }
 
@@ -151,8 +146,7 @@ Board.prototype.checkForRow = function(){
 				this.map[y][x] = 3;
 			}
 			this.completedRows += 1;		
-		}
-		
+		}		
 	}
 	while(this.rowsCleared() == false){
 		for(var y = 17; y > -1; y--){
@@ -174,7 +168,6 @@ Board.prototype.checkForRow = function(){
 }
 
 Board.prototype.rowsCleared = function(){
-
 	for(var y = 17; y > -1; y--){
 		if(this.map[y][0] == 3){
 			return false;
@@ -182,8 +175,7 @@ Board.prototype.rowsCleared = function(){
 		else{
 		}	
 	}
-	return true;
-	
+	return true;	
 }
 
 
@@ -230,26 +222,27 @@ for (var i = 0; i < this.tile[0].length; i++) {
 }
 
 Board.prototype.setTile = function(){
-	switch(Math.floor(Math.random()*5)){
+	switch(Math.floor(Math.random()*7)){
 		case 0:
 			this.tile = this.tileone;
-			console.log(0);
 			break;
 		case 1:
 			this.tile = this.tiletwo;
-			console.log(1);
 			break;
 		case 2:
 			this.tile = this.tilethree;
-			console.log(2);
 			break;
 		case 3:
 			this.tile = this.tilefour;
-			console.log(3);
 			break;
 		case 4:
 			this.tile = this.tilefive;
-			console.log(4);
+			break;
+		case 5:
+			this.tile = this.tilesix;
+			break;
+		case 6:
+			this.tile = this.tileseven;
 			break;
 	}
 }
