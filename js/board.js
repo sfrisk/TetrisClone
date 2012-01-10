@@ -242,7 +242,12 @@ for (var i = 0; i < this.tile[0].length; i++) {
 			newTile[i][j] = this.tile[this.tile.length-j-1][i];
 		}
 	}
+	var old = this.tile 
 	this.tile = newTile;
+	if(this.checkCollision(0,0) == true){
+		this.tile = old;
+	}
+	
 
 
 }
